@@ -1,24 +1,40 @@
 import styles from './../styles/components/ChallengeBox.module.css';
+import { ChallengesContext } from '../contexts/ChallengesContext';
+import { useContext } from 'react';
 
 export default function ChallengeBox () {
-    const hasChallenges = true;
+    const challengeContext = useContext(ChallengesContext);
+    const currentChallenge = challengeContext.currentChallenge;
 
     return (
         <div className={styles.challengeBoxContainer}>
             {
-                hasChallenges ? (
+                currentChallenge ? (
                     <div className={styles.challengeActive}>
-                        <header>Ganhe 400 xp</header>
+                        <header>Ganhe {currentChallenge.amount} xp</header>
 
                         <main>
-                            <img src="icons/body.svg" alt="body"/>
+                            <img src={`icons/${currentChallenge.type}.svg`} alt="body"/>
                             <strong>Novo desafio</strong>
-                            <p>Levante e faça uma caminhada de 3 minutos</p>
+                            <p>{currentChallenge.description}</p>
                         </main>
 
                         <footer>
-                            <button type="button" className={styles.challengeFailed}>Falhei</button>
-                            <button type="button" className={styles.challengeDone}>Completei</button>
+                            <button
+                                type="button" 
+                                className={styles.challengeFailed} 
+                                onClick={challengeContext.resetChallenge}
+                            >
+                                Falhei
+                            </button>
+
+                            <button 
+                                type="button" 
+                                className={styles.challengeDone}
+                            >
+                                Completei
+                            </button>
+                            
                         </footer>
                     </div>
                 ) : (
